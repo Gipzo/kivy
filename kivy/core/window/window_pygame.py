@@ -111,6 +111,12 @@ class WindowPygame(WindowBase):
         except:
             Logger.exception('Window: cannot set icon')
 
+        # window size fix for mac os x
+        if platform == 'macosx' and not self.fullscreen:
+            info = pygame.display.Info()
+            self._size = (min(info.current_w, Config.getint('graphics','width')),
+                          min(info.current_h - 90, Config.getint('graphics','height')))
+
         # try to use mode with multisamples
         try:
             self._pygame_set_mode()
